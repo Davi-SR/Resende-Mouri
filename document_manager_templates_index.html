@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gestão de Documentos</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+</head>
+<body>
+  <main class="container">
+    <header class="header">
+      <h1>Gestão de Documentos</h1>
+      <p class="muted">Upload de PDF/JPG/PNG + histórico de comentários</p>
+    </header>
+
+    {% if request.args.get('error') %}
+      <div class="alert">{{ request.args.get('error') }}</div>
+    {% endif %}
+
+    <section class="card">
+      <h2>Novo upload</h2>
+      <form class="form" action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
+        <label>
+          <span>Título *</span>
+          <input name="title" type="text" required maxlength="120" placeholder="Ex.: Contrato de prestação de serviços" />
+        </label>
+
+        <label>
+          <span>Descrição (opcional)</span>
+          <textarea name="description" rows="3" maxlength="500" placeholder="Observações sobre o documento..."></textarea>
+        </label>
+
+        <label>
+          <span>Arquivo (PDF/JPG/PNG) *</span>
+          <input name="file" type="file" required accept=".pdf,.jpg,.jpeg,.png" />
+        </label>
+
+        <button type="submit">Enviar</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Documentos</h2>
+
+      {% if documents|length == 0 %}
+        <p class="muted">Nenhum documento enviado ainda.</p>
+      {% else %}
+        <ul class="list">
+          {% for d in documents %}
+            <li class="list-item">
+              <div>
+                <div class="title">{{ d['title'] }}</div>
+                <div class="muted">Upload: {{ d['uploaded_at'] }}</div>
+              </div>
+              <div class="actions">
+                <a class="link" href="{{ url_for('document_detail', doc_id=d['id']) }}">Ver</a>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </section>
+  </main>
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
