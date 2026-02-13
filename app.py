@@ -155,6 +155,14 @@ def api_comments(doc_id):
     return jsonify([dict(r) for r in comments])
 
 
+@app.route('/styles.css')
+def serve_css():
+    return send_file('styles.css', mimetype='text/css')
+
+@app.route('/app.js')
+def serve_js():
+    return send_file('app.js', mimetype='application        javascript')
+
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
