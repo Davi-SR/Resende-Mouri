@@ -161,7 +161,7 @@ def serve_css():
 
 @app.route('/app.js')
 def serve_js():
-    return send_file('app.js', mimetype='application        javascript')
+    return send_file('app.js', mimetype='application/javascript')
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
